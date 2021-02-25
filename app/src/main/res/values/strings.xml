@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">NextiaApp</string>
+    <string name="registrarme"><u><b>Registrarme</b></u></string>
+    <string name="no_account">No tengo cuenta.</string>
+    <string name="correo">Correo</string>
+    <string name="contrase_a">Contraseña</string>
+    <string name="entrar">Entrar</string>
+    <string name="forgot"><u><b>Olvide mi contraseña</b></u></string>
+</resources>
