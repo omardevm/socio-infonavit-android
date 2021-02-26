@@ -59,7 +59,7 @@ class Wallets : Fragment(), WalletsView {
                 if (u.wallet.display_text == dt) {
                     sectionMap[dt]?.add(
                         Card(
-                            "Vence en: ${this.getExpirationDays(u.expiration_date)}",
+                            "Vence en: ${this.getExpirationDays(u.expiration_date)} días",
                             u.territories[0].name,
                             u.description,
                             u.ally.mini_logo_full_path,

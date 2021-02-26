@@ -17,14 +17,14 @@
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
-            app:theme="@style/ToolbarColoredBackArrow"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/red"
             android:minHeight="?attr/actionBarSize"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:theme="@style/ToolbarColoredBackArrow" />
 
         <ImageView
             android:id="@+id/logo"
@@ -65,9 +65,11 @@
 
             <TextView
                 android:id="@+id/logout"
-                android:background="?attr/selectableItemBackground"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:paddingTop="@dimen/s16"
+                android:paddingBottom="@dimen/s16"
                 android:text="@string/logout"
                 android:textColor="@color/white" />
         </LinearLayout>
