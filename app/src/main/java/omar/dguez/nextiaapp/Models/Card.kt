@@ -8,4 +8,5 @@ data class Card(
     @SerializedName("cardDesc") val cardDesc: String,
     @SerializedName("cardImg") val cardImg: String,
     @SerializedName("cardImgBg") val cardImgBg: String,
+    @SerializedName("unlocked") val unlocked: Boolean,
 )

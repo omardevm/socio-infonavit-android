@@ -10,5 +10,5 @@
     <color name="red">#EC5056</color>
     <color name="gray">#4E4E4E</color>
     <color name="gray_100">#9F9F9F</color>
-
+    <color name="shimmer">#DDDDDD</color>
 </resources>

@@ -15,4 +15,7 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="ToolbarColoredBackArrow" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
+        <item name="android:textColorSecondary">@color/white</item>
+    </style>
 </resources>

@@ -1,17 +1,24 @@
 package omar.dguez.nextiaapp.Utils
 
+import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.squareup.picasso.Picasso
 import omar.dguez.nextiaapp.Models.Card
 import omar.dguez.nextiaapp.R
 
-class WalletAdapter(private var cardList: List<Card>?) :
+class WalletAdapter(private var cardList: ArrayList<Card>) :
     RecyclerView.Adapter<WalletAdapter.MyViewHolder>() {
+
+    private val itemNumber = 5
+
     /**
      * Inflates the viewHolder
      */
@@ -28,26 +35,22 @@ class WalletAdapter(private var cardList: List<Card>?) :
      * and event listener purposes, one movie at a time
      */
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        if (cardList !== null) {
-            val movie: Card = cardList!![position]
-            holder.bind(movie)
-        }
+        val movie: Card = cardList[position]
+        holder.bind(movie)
     }
 
     override fun getItemCount(): Int {
-        return if (cardList !== null) {
-            cardList!!.size
-        } else {
-            -1
-        }
+        return cardList.size
     }
 
-    fun update(newList: List<Card>) {
+    fun update(newList: ArrayList<Card>) {
         this.cardList = newList;
+        notifyDataSetChanged()
     }
 
-    fun joinLists(newList: List<Card>) {
-        this.cardList = this.cardList?.plus(newList)
+    fun joinLists(newList: ArrayList<Card>) {
+        this.cardList = this.cardList.plus(newList) as ArrayList<Card>
+        notifyDataSetChanged()
     }
 
     /**
@@ -59,6 +62,7 @@ class WalletAdapter(private var cardList: List<Card>?) :
         private var cardReach: TextView? = null
         private var cardDesc: TextView? = null
         private var cardImg: ImageView? = null
+        private var cardButton: Button? = null
         private var cardImgBg: RelativeLayout? = null
 
         init {
@@ -67,12 +71,22 @@ class WalletAdapter(private var cardList: List<Card>?) :
             cardDesc = itemView.findViewById(R.id.cardDesc)
             cardImg = itemView.findViewById(R.id.cardImg)
             cardImgBg = itemView.findViewById(R.id.cardImgBg)
+            cardButton = itemView.findViewById(R.id.buttonWant)
         }
 
         fun bind(card: Card) {
-            cardDate?.text = card.cardDate
-            cardReach?.text = card.cardReach
-            cardDesc?.text = card.cardDesc
+            if (card.unlocked) {
+                cardDate?.text = card.cardDate
+                cardReach?.text = card.cardReach
+                cardDesc?.text = card.cardDesc
+                cardImgBg?.setBackgroundColor(Color.parseColor(card.cardImgBg))
+            } else {
+                cardDate?.visibility = View.GONE
+                cardReach?.visibility = View.GONE
+                cardDesc?.visibility = View.GONE
+                cardImgBg?.setBackgroundColor(Color.parseColor("#00FF0000"))
+                cardButton?.visibility = View.VISIBLE
+            }
             Picasso.get().load(card.cardImg).into(cardImg)
         }
     }

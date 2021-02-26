@@ -1,5 +1,6 @@
 package omar.dguez.nextiaapp.Client
 
+import okhttp3.ResponseBody
 import omar.dguez.nextiaapp.Models.Benevit
 import omar.dguez.nextiaapp.Models.LoginComm
 import omar.dguez.nextiaapp.Models.LoginResp
@@ -26,4 +27,10 @@ interface RestInterface {
      */
     @GET("member/landing_benevits")
     fun getBenevits(@Header("Authorization") header: String): Call<Benevit>
+
+    /**
+     * Logout
+     */
+    @DELETE("logout")
+    fun logout(): Call<ResponseBody>
 }

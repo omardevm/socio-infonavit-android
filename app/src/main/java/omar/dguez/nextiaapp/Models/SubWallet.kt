@@ -12,7 +12,7 @@ data class SubWallet(
     @SerializedName("primary_color") val primary_color: String,
     @SerializedName("secondary_color") val secondary_color: String,
     @SerializedName("created_at") val created_at: String,
-    @SerializedName("updated_at") val updated_at: Int,
+    @SerializedName("updated_at") val updated_at: String,
     @SerializedName("display_index") val display_index: String,
     @SerializedName("avatar") val avatar: Boolean,
     @SerializedName("mobile_cover_url") val mobile_cover_url: Boolean,
