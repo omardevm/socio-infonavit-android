@@ -1,5 +1,6 @@
 package omar.dguez.nextiaapp.Fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,11 +14,13 @@ import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import okhttp3.Headers
+import omar.dguez.nextiaapp.Activities.CargaBenevits
 import omar.dguez.nextiaapp.Client.RestClient
 import omar.dguez.nextiaapp.Models.LoginComm
 import omar.dguez.nextiaapp.Models.LoginResp
 import omar.dguez.nextiaapp.Models.Usuario
 import omar.dguez.nextiaapp.R
+import omar.dguez.nextiaapp.Utils.SharedPrefManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -82,6 +85,16 @@ class Login : Fragment(), View.OnClickListener, Callback<LoginResp> {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        if (SharedPrefManager.getInstance(activity!!).isLoggedIn) {
+            activity!!.finish()
+            startActivity(Intent(activity!!, CargaBenevits::class.java))
+        } else {
+            SharedPrefManager.getInstance(activity!!).clear()
+        }
+    }
+
     private val loginTextWatcher = object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
         }
@@ -100,11 +113,20 @@ class Login : Fragment(), View.OnClickListener, Callback<LoginResp> {
     override fun onResponse(call: Call<LoginResp>, response: Response<LoginResp>) {
         if (response.isSuccessful) {
             val headerList: Headers = response.headers()
+            val intent = Intent(activity!!, CargaBenevits::class.java)
+            var auth = ""
             for (header in headerList) {
-                Log.d("RAE", header.first + " :::" + header.second)
+                if (header.first == "Authorization") {
+                    auth = header.second
+                    break
+                }
             }
-            //Pasar a otro activity con los datos de inicio de sesión
-            //Authorization es el header que contiene el token
+            val instance = SharedPrefManager.getInstance(activity!!)
+            instance.saveAuthToken(auth)
+            instance.saveResponse(response.body()!!)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+
+            startActivity(intent)
         } else {
             this.showDialog()
         }

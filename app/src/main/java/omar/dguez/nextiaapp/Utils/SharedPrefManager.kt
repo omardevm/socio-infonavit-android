@@ -2,11 +2,13 @@ package omar.dguez.nextiaapp.Utils
 
 import android.annotation.SuppressLint
 import android.content.Context
+import omar.dguez.nextiaapp.Models.LoginResp
+import omar.dguez.nextiaapp.Models.Miembro
 import omar.dguez.nextiaapp.Models.Usuario
 
 
-class SharedPrefManager private constructor(private val mCtx: Context) {
-    val sharedPreferences =
+class SharedPrefManager private constructor(mCtx: Context) {
+    private val sharedPreferences =
         mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
 
     val isLoggedIn: Boolean
@@ -14,28 +16,50 @@ class SharedPrefManager private constructor(private val mCtx: Context) {
             return sharedPreferences.getString("email", null) != null
         }
 
-    val usuario: Usuario
+    val response: LoginResp
         get() {
-            return Usuario(
+            return LoginResp(
+                sharedPreferences.getInt("id", -1),
                 sharedPreferences.getString("email", null),
-                sharedPreferences.getString("password", null)
+                sharedPreferences.getString("role", null),
+                Miembro(
+                    sharedPreferences.getInt("id", -1),
+                    sharedPreferences.getInt("user_id", -1),
+                    sharedPreferences.getString("id_socio_infonavit", null),
+                    sharedPreferences.getString("name", null),
+                    sharedPreferences.getString("lastname", null),
+                    sharedPreferences.getString("mobile", null),
+                    sharedPreferences.getString("zipcode", null),
+                    sharedPreferences.getString("avatar", null),
+                ),
+                sharedPreferences.getInt("sign_in_count", -1),
             )
         }
 
     fun saveAuthToken(token: String) {
         val editor = sharedPreferences.edit()
-        editor.putString(SessionManager.USER_TOKEN, token)
+        editor.putString(SharedPrefManager.USER_TOKEN, token)
         editor.apply()
     }
 
     fun fetchAuthToken(): String? {
-        return sharedPreferences.getString(SessionManager.USER_TOKEN, null)
+        return sharedPreferences.getString(SharedPrefManager.USER_TOKEN, null)
     }
 
-    fun saveUser(usuario: Usuario) {
+    fun saveResponse(usuario: LoginResp) {
         val editor = sharedPreferences.edit()
+        val miembro = usuario.miembro
         editor.putString("email", usuario.email)
-        editor.putString("password", usuario.password)
+        editor.putString("role", usuario.role)
+        editor.putString("id_socio_infonavit", miembro?.id_socio_infonavit)
+        editor.putString("name", miembro?.name)
+        editor.putString("lastname", miembro?.lastname)
+        editor.putString("mobile", miembro?.mobile)
+        editor.putString("zipcode", miembro?.zipcode)
+        editor.putString("avatar", miembro?.avatar)
+        editor.putInt("id", usuario.id)
+        editor.putInt("user_id", miembro!!.user_id)
+        editor.putInt("sign_in_count", usuario.sign_in_count)
         editor.apply()
     }
 
@@ -46,7 +70,10 @@ class SharedPrefManager private constructor(private val mCtx: Context) {
     }
 
     companion object {
-        private val SHARED_PREF_NAME = "my_shared_preff"
+        const val SHARED_PREF_NAME = "my_shared_preff"
+        const val USER_TOKEN = "user_token"
+
+        @SuppressLint("StaticFieldLeak")
         private var mInstance: SharedPrefManager? = null
 
         @Synchronized

@@ -4,6 +4,7 @@
     package="omar.dguez.nextiaapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -13,6 +14,7 @@
         android:theme="@style/Theme.NextiaApp"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
+        <activity android:name=".Activities.CargaBenevits"></activity>
         <activity
             android:name=".Activities.MainActivity"
             android:screenOrientation="portrait">
